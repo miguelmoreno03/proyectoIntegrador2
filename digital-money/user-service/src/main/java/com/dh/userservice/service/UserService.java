@@ -56,7 +56,7 @@ public class UserService {
     private String createAlias() throws IOException {
 
         List<String> words = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get("src/main/resources/words.txt"))) {
+        try (Stream<String> stream = Files.lines(Paths.get("user-service/src/main/resources/words.txt"))) {
             words = stream.collect(Collectors.toList());
             System.out.println("salio");
         }catch (IOException e){
