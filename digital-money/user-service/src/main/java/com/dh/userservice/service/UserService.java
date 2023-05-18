@@ -2,7 +2,9 @@ package com.dh.userservice.service;
 
 import com.dh.userservice.Exceptions.BadRequestException;
 import com.dh.userservice.entities.AppUser;
-import com.dh.userservice.repository.UserRepository;
+import com.dh.userservice.repository.IUserRepository;
+
+import com.dh.userservice.repository.KeyCloakUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,9 @@ import java.util.stream.Stream;
 @Service
 public class UserService {
     @Autowired
-    UserRepository userRepository;
+    IUserRepository userRepository;
+    @Autowired
+    KeyCloakUserRepository keycloakRepository;
 
     //search user x email
     public AppUser searchUserByEmail(String email) {
@@ -38,6 +42,7 @@ public class UserService {
      }else {
          //TODO go and verify the email
          //TODO assign role
+         keycloakRepository.createUser(appuser);
          String password = encryptPassword(appuser.getPassword());
          appuser.setPassword(password);
          String alias = createAlias();

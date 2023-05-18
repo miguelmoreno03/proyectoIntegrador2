@@ -15,32 +15,24 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-
 public class AppUser {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
-    private String name ;
+    private String first_name ;
     @Column
     private String last_name ;
     @Column
-    private Long dni ;
+    private String dni ;
     @Column
     private String email ;
     @Column
-    private Long phone ;
+    private String phone ;
     @Column
     private String password;
-
     @Column
-    private Long cvu ;
+    private String cvu;
     @Column
     private String alias;
-
-
-
-
 }
