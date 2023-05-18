@@ -18,8 +18,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
        AppUser usuario =  usuarioRepository
-               .findOneByEmail(email);
-//               .orElseThrow(() -> new UsernameNotFoundException("El usuario con email "+ email + "no existe."));
+               .findOneByEmail(email)
+               .orElseThrow(() -> new UsernameNotFoundException("El usuario con email "+ email + "no existe."));
         return new UserDetailsImpl(usuario);
     }
 }

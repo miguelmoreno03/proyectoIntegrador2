@@ -4,8 +4,10 @@ import com.dh.userservice.entities.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository  <AppUser,Integer>{
-    AppUser findOneByEmail (String email);
+    Optional<AppUser> findOneByEmail (String email);
 
 }

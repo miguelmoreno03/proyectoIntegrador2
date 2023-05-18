@@ -23,7 +23,7 @@ public class UserService {
     UserRepository userRepository;
 
     //search user x email
-    public AppUser searchUserByEmail(String email) {
+    public Optional<AppUser> searchUserByEmail(String email) {
         return userRepository.findOneByEmail(email);
     }
     public Optional<AppUser> searchUserById(Integer id) {
@@ -32,39 +32,39 @@ public class UserService {
 
     public AppUser createUser(AppUser appuser) throws BadRequestException ,IOException{
 
-     AppUser searchedUser = userRepository.findOneByEmail(appuser.getEmail());
-     if(searchedUser!=null){
-       throw new BadRequestException("This email is already associated with an account created");
-     }else {
+     Optional<AppUser>  searchedUser = userRepository.findOneByEmail(appuser.getEmail());
+//     if(searchedUser!=null){
+//       throw new BadRequestException("This email is already associated with an account created");
+//     }else {
          //TODO go and verify the email
          //TODO assign role
-//         String password = encryptPassword(appuser.getPassword());
-//         appuser.setPassword(password);
-//         String alias = createAlias();
-//         appuser.setAlias(alias);
+         String password = encryptPassword(appuser.getPassword());
+         appuser.setPassword(password);
+         String alias = createAlias();
+         appuser.setAlias(alias);
          userRepository.save(appuser);
          return appuser;
      }
 
+  //  }
+
+    private String encryptPassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
     }
 
-//    private String encryptPassword(String password) {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        return encoder.encode(password);
-//    }
-//
-//    private String createAlias() throws IOException {
-//
-//        List<String> words = new ArrayList<>();
-//        try (Stream<String> stream = Files.lines(Paths.get("user-service/src/main/resources/words.txt"))) {
-//            words = stream.collect(Collectors.toList());
-//            System.out.println("salio");
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-//        Random random = new Random();
-//        return words.get(random.nextInt(words.size())) + "." +
-//                words.get(random.nextInt(words.size())) + "." +
-//                words.get(random.nextInt(words.size()));
-//    }
+    private String createAlias() throws IOException {
+
+        List<String> words = new ArrayList<>();
+        try (Stream<String> stream = Files.lines(Paths.get("user-service/src/main/resources/words.txt"))) {
+            words = stream.collect(Collectors.toList());
+            System.out.println("salio");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        Random random = new Random();
+        return words.get(random.nextInt(words.size())) + "." +
+                words.get(random.nextInt(words.size())) + "." +
+                words.get(random.nextInt(words.size()));
+    }
 }
