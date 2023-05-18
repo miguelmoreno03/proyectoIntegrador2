@@ -1,0 +1,16 @@
+DROP DATABASE IF EXISTS digitalmoney;
+CREATE DATABASE digitalmoney;
+USE digitalmoney;
+
+CREATE TABLE users (
+id INT AUTO_INCREMENT NOT NULL,
+first_name VARCHAR(250) ,
+last_name  VARCHAR(250) ,
+dni VARCHAR(250),
+email VARCHAR(250) ,
+phone  VARCHAR(250),
+password TEXT(1000) NOT NULL,
+cvu VARCHAR(250) UNIQUE,
+alias VARCHAR(255) NOT NULL,
+PRIMARY KEY (id)
+);
