@@ -2,7 +2,9 @@ package com.dh.userservice.service;
 
 import com.dh.userservice.Exceptions.BadRequestException;
 import com.dh.userservice.entities.AppUser;
-import com.dh.userservice.repository.UserRepository;
+import com.dh.userservice.repository.IUserRepository;
+
+import com.dh.userservice.repository.KeyCloakUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,24 +22,27 @@ import java.util.stream.Stream;
 @Service
 public class UserService {
     @Autowired
-    UserRepository userRepository;
+    IUserRepository userRepository;
+    @Autowired
+    KeyCloakUserRepository keycloakRepository;
 
     //search user x email
-    public Optional<AppUser> searchUserByEmail(String email) {
-        return userRepository.findOneByEmail(email);
+    public AppUser searchUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
-    public Optional<AppUser> searchUserById(Integer id) {
+    public Optional<AppUser> searchUserById(Long id) {
         return userRepository.findById(id);
     }
 
     public AppUser createUser(AppUser appuser) throws BadRequestException ,IOException{
 
-     Optional<AppUser>  searchedUser = userRepository.findOneByEmail(appuser.getEmail());
-//     if(searchedUser!=null){
-//       throw new BadRequestException("This email is already associated with an account created");
-//     }else {
+     AppUser searchedUser = userRepository.findByEmail(appuser.getEmail());
+     if(searchedUser!=null){
+       throw new BadRequestException("This email is already associated with an account created");
+     }else {
          //TODO go and verify the email
          //TODO assign role
+         keycloakRepository.createUser(appuser);
          String password = encryptPassword(appuser.getPassword());
          appuser.setPassword(password);
          String alias = createAlias();
@@ -46,7 +51,7 @@ public class UserService {
          return appuser;
      }
 
-  //  }
+    }
 
     private String encryptPassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -58,7 +63,6 @@ public class UserService {
         List<String> words = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get("user-service/src/main/resources/words.txt"))) {
             words = stream.collect(Collectors.toList());
-            System.out.println("salio");
         }catch (IOException e){
             e.printStackTrace();
         }

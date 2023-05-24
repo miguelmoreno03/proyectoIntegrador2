@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/users")
@@ -19,7 +17,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/{email}")
-    public ResponseEntity<Optional<AppUser>> searchUser (@PathVariable String email ) throws ResourceNotFountException {
+    public ResponseEntity<AppUser> searchUser (@PathVariable String email ) throws ResourceNotFountException {
         return ResponseEntity.ok(userService.searchUserByEmail(email));
     }
     @PostMapping

@@ -3,40 +3,36 @@ package com.dh.userservice.entities;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
-
 public class AppUser {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
+    private Long id;
     @Column
-    private String name ;
+    private String first_name ;
     @Column
     private String last_name ;
     @Column
-    private Integer dni ;
+    private String dni ;
     @Column
     private String email ;
     @Column
-    private Long phone ;
+    private String phone ;
     @Column
     private String password;
-
     @Column
-    private Long cvu ;
+    private String cvu;
     @Column
     private String alias;
-
-
-
-
 }
