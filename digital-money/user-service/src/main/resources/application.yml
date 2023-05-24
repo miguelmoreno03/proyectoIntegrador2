@@ -26,8 +26,8 @@ dh:
   keycloak:
     serverUrl: http://localhost:8082/
     realm: digital-money
-    clientId: microservicios
-    clientSecret: DUgBV76TpYL0TMCPn4TeE3yfrVMpddNa
+    clientId: user-service
+    clientSecret: VoEW6NvyMkdo5hbpMN4i8UdhH2L906xS
 
 server:
   port: 8080

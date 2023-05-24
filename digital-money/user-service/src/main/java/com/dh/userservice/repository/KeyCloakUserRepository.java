@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Repository
 public class KeyCloakUserRepository implements IUserKeyCloakRepository {
@@ -31,12 +33,18 @@ public class KeyCloakUserRepository implements IUserKeyCloakRepository {
         userRepresentation.setFirstName(user.getFirst_name());
         userRepresentation.setLastName(user.getLast_name());
         userRepresentation.setEmail(user.getEmail());
+
+        List<String> requiredActions = new ArrayList<>();
+        requiredActions.add("VERIFY_EMAIL");
+        userRepresentation.setRequiredActions(requiredActions);
+
         CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
         credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
         credentialRepresentation.setValue(user.getPassword());
         credentialRepresentation.setTemporary(false);
         userRepresentation.setCredentials(Collections.singletonList(credentialRepresentation));
         userRepresentation.setEnabled(true);
+
         return userRepresentation;
     }
 }
