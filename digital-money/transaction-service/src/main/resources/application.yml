@@ -1,0 +1,60 @@
+#conexion
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/digitalmoney
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #jpa
+  jpa:
+    database:
+      platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      show-sql: true
+      properties:
+        hibernate.formal_sql: true
+  #name
+  application:
+    name: transactions-service
+#spring security
+
+#keycloack variables
+dh:
+  keycloak:
+    serverUrl: http://localhost:8082/
+    realm: digital-money
+    clientId: user-service
+    clientSecret: VoEW6NvyMkdo5hbpMN4i8UdhH2L906xS
+
+server:
+  port: 8083
+#eureka config
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+#acuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+
+
+

@@ -2,6 +2,7 @@ package com.dh.userservice.entities;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +30,10 @@ public class AppUser {
     private String email ;
     @Column
     private String phone ;
+
     @Column
     private String password;
-    @Column
-    private String cvu;
-    @Column
-    private String alias;
+    @JsonIgnore
+    @Transient
+    private Account account;
 }
