@@ -35,4 +35,7 @@ public class AppUser {
     private String cvu;
     @Column
     private String alias;
+
+    public AppUser() {
+    }
 }
