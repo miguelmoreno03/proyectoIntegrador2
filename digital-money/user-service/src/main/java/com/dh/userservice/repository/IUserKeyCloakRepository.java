@@ -1,9 +1,11 @@
 package com.dh.userservice.repository;
 
 import com.dh.userservice.entities.AppUser;
-import org.springframework.stereotype.Repository;
+import com.dh.userservice.entities.AppUserDTO;
 
 
 public interface IUserKeyCloakRepository {
-    public AppUser createUser (AppUser user);
+     void createUser (AppUser user);
+    void patchUser (String username , AppUserDTO user);
+
 }
