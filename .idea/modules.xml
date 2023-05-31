@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/digital-money/account-service/account-service.iml" filepath="$PROJECT_DIR$/digital-money/account-service/account-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/digital-money/cards-service/cards-service.iml" filepath="$PROJECT_DIR$/digital-money/cards-service/cards-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/equipo-07.iml" filepath="$PROJECT_DIR$/.idea/equipo-07.iml" />
+      <module fileurl="file://$PROJECT_DIR$/digital-money/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/digital-money/eureka-server/eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/digital-money/user-service/src/main/main.iml" filepath="$PROJECT_DIR$/digital-money/user-service/src/main/main.iml" />
       <module fileurl="file://$PROJECT_DIR$/digital-money/eureka-server/src/main/main1.iml" filepath="$PROJECT_DIR$/digital-money/eureka-server/src/main/main1.iml" />
       <module fileurl="file://$PROJECT_DIR$/digital-money/user-service/src/test/test.iml" filepath="$PROJECT_DIR$/digital-money/user-service/src/test/test.iml" />
       <module fileurl="file://$PROJECT_DIR$/digital-money/eureka-server/src/test/test1.iml" filepath="$PROJECT_DIR$/digital-money/eureka-server/src/test/test1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/digital-money/transaction-service/transaction-service.iml" filepath="$PROJECT_DIR$/digital-money/transaction-service/transaction-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/digital-money/user-service/untitled/untitled.iml" filepath="$PROJECT_DIR$/digital-money/user-service/untitled/untitled.iml" />
     </modules>
   </component>

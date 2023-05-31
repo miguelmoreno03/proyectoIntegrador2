@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,18 +18,22 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+
     private String type;
-    @Column
     private Double balance;
-    @Column
-    private AccountDTO account;
-    @Column
-    private String card_number;
-    @Column
-    private String account_holder;
-    @Column
-    private LocalDateTime expire_Date;
-    @Column
-    private String bank_entity;
+
+    @Column(name = "account_id")
+    private Long accountId;
+
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    @Column(name = "account_holder")
+    private String accountHolder;
+
+    @Column(name = "expire_date")
+    private Date expireDate;
+
+    @Column(name = "bank_entity")
+    private String bankEntity;
 }

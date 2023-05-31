@@ -4,6 +4,7 @@ import com.dh.accountservice.entities.*;
 import com.dh.accountservice.exceptions.BadRequestException;
 import com.dh.accountservice.exceptions.ResourceNotFountException;
 import com.dh.accountservice.repository.IAccountRepository;
+import com.dh.accountservice.repository.feing.ICardFeignRepository;
 import com.dh.accountservice.repository.feing.ITransactionFeignRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,19 @@ public class AccountService {
     @Autowired
     ITransactionFeignRepository transactionFeignRepository;
 
+    @Autowired
+    ICardFeignRepository cardFeignRepository;
+
     public AccountTransactionsDTO findLastTransactionsByAccountId (Long id ) {
         Optional<List<Transaction>> response = transactionFeignRepository.findAllByAccountId(id);
         Account account = accountRepository.findById(id).orElse(null);
         return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+    }
+
+    public AccountCardsDTO findAllCardsByAccountId (Long id ) {
+        Optional<List<Card>> response = cardFeignRepository.findAllByAccountId(id);
+        Account account = accountRepository.findById(id).orElse(null);
+        return new AccountCardsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
     }
 
     public AccountDTO findAccountById (Long id) throws ResourceNotFountException{

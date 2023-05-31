@@ -1,9 +1,6 @@
 package com.dh.accountservice.controller;
 
-import com.dh.accountservice.entities.Account;
-import com.dh.accountservice.entities.AccountCreateRequestDTO;
-import com.dh.accountservice.entities.AccountDTO;
-import com.dh.accountservice.entities.AccountTransactionsDTO;
+import com.dh.accountservice.entities.*;
 import com.dh.accountservice.exceptions.BadRequestException;
 import com.dh.accountservice.exceptions.ResourceNotFountException;
 import com.dh.accountservice.service.AccountService;
@@ -23,9 +20,15 @@ public class AccountController {
     @Autowired
     AccountService accountService;
     @GetMapping("/{id}/transactions")
-   public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ){
+    public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ){
         return ResponseEntity.ok( accountService.findLastTransactionsByAccountId(id));
     }
+
+    @GetMapping("/{id}/cards")
+    public ResponseEntity<AccountCardsDTO>  findAllCardsByAccountId(@PathVariable Long id ){
+        return ResponseEntity.ok( accountService.findAllCardsByAccountId(id));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> findAccountById (@PathVariable Long id) throws ResourceNotFountException {
         try {
