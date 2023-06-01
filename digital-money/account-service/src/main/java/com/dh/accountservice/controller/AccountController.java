@@ -14,8 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/accounts")
@@ -23,8 +22,13 @@ public class AccountController {
     @Autowired
     AccountService accountService;
     @GetMapping("/{id}/transactions")
-   public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ){
-        return ResponseEntity.ok( accountService.findLastTransactionsByAccountId(id));
+   public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
+        try {
+            AccountTransactionsDTO transactionsDTO = accountService.findLastTransactionsByAccountId(id);
+            return ResponseEntity.ok(transactionsDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> findAccountById (@PathVariable Long id) throws ResourceNotFountException {
