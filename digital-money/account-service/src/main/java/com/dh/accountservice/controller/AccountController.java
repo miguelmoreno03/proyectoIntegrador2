@@ -20,13 +20,33 @@ public class AccountController {
     @Autowired
     AccountService accountService;
     @GetMapping("/{id}/transactions")
-    public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ){
-        return ResponseEntity.ok( accountService.findLastTransactionsByAccountId(id));
+    public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
+        try {
+            AccountTransactionsDTO transactionsDTO = accountService.findLastTransactionsByAccountId(id);
+            return ResponseEntity.ok(transactionsDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{id}/cards")
-    public ResponseEntity<AccountCardsDTO>  findAllCardsByAccountId(@PathVariable Long id ){
-        return ResponseEntity.ok( accountService.findAllCardsByAccountId(id));
+    public ResponseEntity<AccountCardsDTO>  findAllCardsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
+        try {
+            AccountCardsDTO cardsDTO = accountService.findAllCardsByAccountId(id);
+            return ResponseEntity.ok(cardsDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{accountId}/cards/{cardId}")
+    public ResponseEntity<AccountsCardDTO>  findAccountWithCard(@PathVariable Long accountId, @PathVariable Long cardId) throws ResourceNotFountException {
+        try {
+            AccountsCardDTO cardDTO = accountService.findAccountWithCardById(accountId, cardId);
+            return ResponseEntity.ok(cardDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{id}")

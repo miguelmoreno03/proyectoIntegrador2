@@ -22,9 +22,15 @@ public class CardController {
     @Autowired
     CardService cardService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<Card>> searchTransactionsByAccountId (@PathVariable Long id )  {
+    @GetMapping("accounts/{id}")
+    public ResponseEntity<List<Card>> searchCardsByAccountId (@PathVariable Long id )  {
         Optional<List<Card>> cardsSearched = cardService.findAllCardsByAccountId(id);
         return cardsSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Card> findCardById(@PathVariable Long id) {
+        Optional<Card> cardSearched = cardService.findCardById(id);
+        return cardSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

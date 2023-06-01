@@ -1,21 +1,36 @@
 package com.dh.accountservice.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Card {
+
     private Long id;
 
     private String type;
 
     private Double balance;
 
-    private Long account_id;
+    private Long accountId;
 
-    private String card_number;
+    private String cardNumber;
 
-    private String account_holder;
+    private String accountHolder;
 
-    private LocalDateTime expire_date;
+    private LocalDateTime expireDate;
 
-    private String bank_entity;
+    private String bankEntity;
 }

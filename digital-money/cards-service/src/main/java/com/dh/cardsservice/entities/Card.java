@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -32,7 +33,7 @@ public class Card {
     private String accountHolder;
 
     @Column(name = "expire_date")
-    private Date expireDate;
+    private LocalDateTime expireDate;
 
     @Column(name = "bank_entity")
     private String bankEntity;
