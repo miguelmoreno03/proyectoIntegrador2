@@ -63,10 +63,7 @@ public class AccountService {
     }
 
     public AccountDTO findAccountById (Long id) throws ResourceNotFountException{
-        Account account = accountRepository.findById(id).orElse(null);
-        if (account == null){
-            throw  new ResourceNotFountException( "we don´t found any account with the id :" + id);
-        }
+        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
         return  new AccountDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(),account.getUser_id());
     }
     public AccountDTO findAccountByUserId (Long userId) throws ResourceNotFountException {
@@ -84,10 +81,18 @@ public class AccountService {
         if (accountRepository.findByAlias(alias).isPresent()){
             throw new BadRequestException("We can´t create the user account because the alias it´s already in use");
         } else {
+           Optional<Account> accountOptional = accountRepository.findByUserId(account.getUser_id());
+           if (accountOptional.isPresent()){
+               throw new BadRequestException("We can´t create the user account because the user associated in the account its already in use ");
+
+           }
+            Optional<Account> accountOptionalByCvu=accountRepository.findByCvu(account.getCvu());
+            if (accountOptionalByCvu.isPresent()){
+                throw new BadRequestException("We can´t create the user account because the cvu associated in the account its already in use ");
+            }
             accountRepository.save(account1);
             return new AccountDTO(account1.getId(), account1.getAlias(), account.getCvu(), account1.getBalance(), account1.getUser_id());
         }
-
     }
      public AccountDTO patchAccount (Long id ) throws BadRequestException,IOException{
          Optional<Account> accountSearched = accountRepository.findById(id);

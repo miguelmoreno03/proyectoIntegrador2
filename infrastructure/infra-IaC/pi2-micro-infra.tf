@@ -187,6 +187,45 @@ module "ec2-keycloak" {
     associate_public_ip_address = false  # que los demas en internet puedan acceder
 }
 
+module "ec2-account" {
+    source  = "terraform-aws-modules/ec2-instance/aws"
+    version = "4.0.0"
+    name = "E7-EB-PI2-ACCOUNT-ec2"
+    ami = "ami-007855ac798b5175e"
+    instance_type = "t2.micro"
+    key_name = module.key-pair.key_pair_key_name  #revisar
+    vpc_security_group_ids = [module.sg-private.security_group_id]
+    subnet_id = module.vpc.private_subnets[0]
+    availability_zone = module.vpc.azs[0]
+    associate_public_ip_address = false  # que los demas en internet puedan acceder
+}
+
+module "ec2-cards" {
+    source  = "terraform-aws-modules/ec2-instance/aws"
+    version = "4.0.0"
+    name = "E7-EB-PI2-CARDS-ec2"
+    ami = "ami-007855ac798b5175e"
+    instance_type = "t2.micro"
+    key_name = module.key-pair.key_pair_key_name  #revisar
+    vpc_security_group_ids = [module.sg-private.security_group_id]
+    subnet_id = module.vpc.private_subnets[0]
+    availability_zone = module.vpc.azs[0]
+    associate_public_ip_address = false  # que los demas en internet puedan acceder
+}
+
+module "ec2-transaction" {
+    source  = "terraform-aws-modules/ec2-instance/aws"
+    version = "4.0.0"
+    name = "E7-EB-PI2-TRANSACTION-ec2"
+    ami = "ami-007855ac798b5175e"
+    instance_type = "t2.micro"
+    key_name = module.key-pair.key_pair_key_name  #revisar
+    vpc_security_group_ids = [module.sg-private.security_group_id]
+    subnet_id = module.vpc.private_subnets[1]
+    availability_zone = module.vpc.azs[1]
+    associate_public_ip_address = false  # que los demas en internet puedan acceder
+}
+
 
 output "ec2-configuration-pub-ip" {
   value = module.ec2-configuration.public_ip
@@ -211,6 +250,19 @@ output "ec2-user-pri-ip" {
 output "ec2-keycloak-pri-ip" {
   value = module.ec2-keycloak.private_ip
 }
+
+output "ec2-account-pri-ip" {
+  value = module.ec2-account.private_ip
+}
+
+output "ec2-cards-pri-ip" {
+  value = module.ec2-cards.private_ip
+}
+
+output "ec2-transaction-pri-ip" {
+  value = module.ec2-transaction.private_ip
+}
+
 
 
 

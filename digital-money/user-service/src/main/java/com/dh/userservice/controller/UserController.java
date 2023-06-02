@@ -21,8 +21,13 @@ public class UserController {
     @Autowired
     UserService userService;
     @GetMapping("/email/{email}")
-    public ResponseEntity<AppUser> searchUser (@PathVariable String email ) throws ResourceNotFountException {
-        return ResponseEntity.ok(userService.searchUserByEmail(email));
+    public ResponseEntity<AppUserResponseDTO> searchUser (@PathVariable String email ) throws ResourceNotFountException {
+        try {
+            AppUserResponseDTO userSearched = userService.searchUserByEmail(email);
+            return ResponseEntity.ok(userSearched);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @PostMapping
     public ResponseEntity <AppUserResponseDTO> createUser (@RequestBody AppUser user)  throws BadRequestException, IOException {

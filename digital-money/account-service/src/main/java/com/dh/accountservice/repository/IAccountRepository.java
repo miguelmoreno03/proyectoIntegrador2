@@ -13,4 +13,6 @@ public interface IAccountRepository extends JpaRepository <Account,Long> {
  Optional<Account> findByAlias(String alias);
  @Query("SELECT a FROM Account a WHERE a.user_id=:userId")
  Optional<Account> findByUserId (@Param("userId")Long userId);
+
+ Optional<Account> findByCvu(String cvu);
 }
