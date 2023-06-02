@@ -26,8 +26,14 @@ public class UserService {
     KeyCloakUserRepository keycloakRepository;
 
     //search user x email
-    public AppUser searchUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public AppUserResponseDTO searchUserByEmail(String email) throws ResourceNotFountException {
+        Optional<AppUser> user =userRepository.findByEmail(email);
+        if(user.isPresent()){
+            AppUser  userResponse = user.get();
+            return new AppUserResponseDTO(userResponse.getId(), userResponse.getFirst_name(), userResponse.getLast_name(), userResponse.getDni(), userResponse.getEmail(),userResponse.getPhone());
+        }else {
+            throw new ResourceNotFountException("We don´t found any user with the email :" + email);
+        }
     }
     public AppUserResponseDTO searchUserById(Long id) throws ResourceNotFountException {
         Optional<AppUser> user = userRepository.findById(id);
@@ -61,8 +67,8 @@ public class UserService {
 @Transactional
     public AppUserResponseDTO createUser(AppUser appuser) throws BadRequestException ,IOException{
 
-     AppUser searchedUser = userRepository.findByEmail(appuser.getEmail());
-     if(searchedUser!=null){
+     Optional<AppUser>searchedUser = userRepository.findByEmail(appuser.getEmail());
+     if(searchedUser.isPresent()){
        throw new BadRequestException("This email is already associated with an user created");
      }else {
          //TODO go and verify the email
