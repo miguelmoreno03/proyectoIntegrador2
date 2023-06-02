@@ -1,9 +1,6 @@
 package com.dh.accountservice.controller;
 
-import com.dh.accountservice.entities.Account;
-import com.dh.accountservice.entities.AccountCreateRequestDTO;
-import com.dh.accountservice.entities.AccountDTO;
-import com.dh.accountservice.entities.AccountTransactionsDTO;
+import com.dh.accountservice.entities.*;
 import com.dh.accountservice.exceptions.BadRequestException;
 import com.dh.accountservice.exceptions.ResourceNotFountException;
 import com.dh.accountservice.service.AccountService;
@@ -21,8 +18,14 @@ import java.io.IOException;
 public class AccountController {
     @Autowired
     AccountService accountService;
+
+    @PostMapping("/{id}/cards")
+    public ResponseEntity<Card> saveCardForAccount(@PathVariable Long id, @RequestBody CardCreateDTO cardCreateDTO) throws IOException, BadRequestException {
+        return accountService.saveCardForAccount(id, cardCreateDTO);
+    }
+
     @GetMapping("/{id}/transactions")
-   public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
+    public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
         try {
             AccountTransactionsDTO transactionsDTO = accountService.findLastTransactionsByAccountId(id);
             return ResponseEntity.ok(transactionsDTO);
@@ -30,6 +33,27 @@ public class AccountController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{id}/cards")
+    public ResponseEntity<AccountCardsDTO>  findAllCardsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
+        try {
+            AccountCardsDTO cardsDTO = accountService.findAllCardsByAccountId(id);
+            return ResponseEntity.ok(cardsDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{accountId}/cards/{cardId}")
+    public ResponseEntity<AccountsCardDTO>  findAccountWithCard(@PathVariable Long accountId, @PathVariable Long cardId) throws ResourceNotFountException {
+        try {
+            AccountsCardDTO cardDTO = accountService.findAccountWithCardById(accountId, cardId);
+            return ResponseEntity.ok(cardDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AccountDTO> findAccountById (@PathVariable Long id) throws ResourceNotFountException {
         try {

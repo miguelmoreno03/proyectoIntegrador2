@@ -4,11 +4,13 @@ import com.dh.accountservice.entities.*;
 import com.dh.accountservice.exceptions.BadRequestException;
 import com.dh.accountservice.exceptions.ResourceNotFountException;
 import com.dh.accountservice.repository.IAccountRepository;
+import com.dh.accountservice.repository.feing.ICardFeignRepository;
 import com.dh.accountservice.repository.feing.ITransactionFeignRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.lang.module.ResolutionException;
@@ -25,10 +27,39 @@ public class AccountService {
     @Autowired
     ITransactionFeignRepository transactionFeignRepository;
 
+    @Autowired
+    ICardFeignRepository cardFeignRepository;
+
+
+    public ResponseEntity<Card> saveCardForAccount(Long accountId, CardCreateDTO cardCreateDTO) {
+        Card card = new Card();
+        card.setType(cardCreateDTO.getType());
+        card.setBalance(cardCreateDTO.getBalance());
+        card.setAccountId(accountId);
+        card.setCardNumber(cardCreateDTO.getCardNumber());
+        card.setAccountHolder(cardCreateDTO.getAccountHolder());
+        card.setExpireDate(cardCreateDTO.getExpireDate());
+        card.setBankEntity(cardCreateDTO.getBankEntity());
+
+        return cardFeignRepository.saveCard(card);
+    }
+
     public AccountTransactionsDTO findLastTransactionsByAccountId (Long id ) throws ResourceNotFountException {
         Optional<List<Transaction>> response = transactionFeignRepository.findAllByAccountId(id);
         Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
         return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+    }
+
+    public AccountCardsDTO findAllCardsByAccountId (Long id ) throws ResourceNotFountException {
+        Optional<List<Card>> response = cardFeignRepository.findAllByAccountId(id);
+        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
+        return new AccountCardsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+    }
+
+    public AccountsCardDTO findAccountWithCardById(Long accountId, Long cardId) throws ResourceNotFountException {
+        Optional<Card> response = cardFeignRepository.findCardById(cardId);
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + accountId));
+        return new AccountsCardDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
     }
 
     public AccountDTO findAccountById (Long id) throws ResourceNotFountException{

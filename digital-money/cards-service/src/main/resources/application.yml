@@ -18,19 +18,10 @@ spring:
         hibernate.formal_sql: true
   #name
   application:
-    name: accounts-service
-#spring security
-
-#keycloack variables
-dh:
-  keycloak:
-    serverUrl: http://localhost:8082/
-    realm: digital-money
-    clientId: user-service
-    clientSecret: VoEW6NvyMkdo5hbpMN4i8UdhH2L906xS
+    name: cards-service
 
 server:
-  port: 8084
+  port: 8085
 #eureka config
 eureka:
   instance:
@@ -55,4 +46,3 @@ management:
       enabled: true
     health:
       enabled: true
-
