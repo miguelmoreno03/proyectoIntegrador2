@@ -15,10 +15,15 @@ public class CardService {
     @Autowired
     ICardRepository cardRepository;
 
+    public Card saveCard(Card card){
+        return cardRepository.save(card);
+    }
+    public Optional<Card> findByCardNumber(String cardNumber){
+        return Optional.ofNullable(cardRepository.findByCardNumber(cardNumber));
+    }
     public Optional<List<Card>> findAllCardsByAccountId(Long id){
         return cardRepository.findAllCardsByAccountId(id);
     }
-
     public Optional<Card> findCardById(Long id) {
         return cardRepository.findById(id);
     }

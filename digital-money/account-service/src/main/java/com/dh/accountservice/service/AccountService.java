@@ -10,6 +10,7 @@ import com.dh.accountservice.repository.feing.ITransactionFeignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.IOException;
 import java.lang.module.ResolutionException;
@@ -28,6 +29,20 @@ public class AccountService {
 
     @Autowired
     ICardFeignRepository cardFeignRepository;
+
+
+    public ResponseEntity<Card> saveCardForAccount(Long accountId, CardCreateDTO cardCreateDTO) {
+        Card card = new Card();
+        card.setType(cardCreateDTO.getType());
+        card.setBalance(cardCreateDTO.getBalance());
+        card.setAccountId(accountId);
+        card.setCardNumber(cardCreateDTO.getCardNumber());
+        card.setAccountHolder(cardCreateDTO.getAccountHolder());
+        card.setExpireDate(cardCreateDTO.getExpireDate());
+        card.setBankEntity(cardCreateDTO.getBankEntity());
+
+        return cardFeignRepository.saveCard(card);
+    }
 
     public AccountTransactionsDTO findLastTransactionsByAccountId (Long id ) throws ResourceNotFountException {
         Optional<List<Transaction>> response = transactionFeignRepository.findAllByAccountId(id);

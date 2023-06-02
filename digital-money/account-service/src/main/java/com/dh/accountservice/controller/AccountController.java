@@ -19,6 +19,12 @@ import java.util.Optional;
 public class AccountController {
     @Autowired
     AccountService accountService;
+
+    @PostMapping("/{id}/cards")
+    public ResponseEntity<Card> saveCardForAccount(@PathVariable Long id, @RequestBody CardCreateDTO cardCreateDTO) throws IOException, BadRequestException {
+        return accountService.saveCardForAccount(id, cardCreateDTO);
+    }
+
     @GetMapping("/{id}/transactions")
     public ResponseEntity<AccountTransactionsDTO>  findTransactionsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
         try {

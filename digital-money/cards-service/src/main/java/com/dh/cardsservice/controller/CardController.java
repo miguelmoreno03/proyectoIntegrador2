@@ -22,6 +22,24 @@ public class CardController {
     @Autowired
     CardService cardService;
 
+
+    @PostMapping()
+    public ResponseEntity<Card> saveCard(@RequestBody Card card) {
+        Optional<Card> existingCard = cardService.findByCardNumber(card.getCardNumber());
+
+        if (existingCard.isPresent() && !existingCard.get().getAccountId().equals(card.getAccountId())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        Card savedCard = cardService.saveCard(card);
+
+        if (savedCard != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(savedCard);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("accounts/{id}")
     public ResponseEntity<List<Card>> searchCardsByAccountId (@PathVariable Long id )  {
         Optional<List<Card>> cardsSearched = cardService.findAllCardsByAccountId(id);
