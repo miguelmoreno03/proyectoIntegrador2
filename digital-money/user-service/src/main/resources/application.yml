@@ -28,7 +28,7 @@ dh:
     serverUrl: http://localhost:8082/
     realm: digital-money
     clientId: user-service
-    clientSecret: 4wH7rQQw3jU0lneiHMrF4DVDCGfZjeNB
+    clientSecret: ax3112PpZlMIgL9nLaIRzRAyHHWirYrT
 
 server:
   port: 8080
@@ -59,8 +59,5 @@ management:
 
 
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
+
 

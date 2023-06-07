@@ -1,0 +1,595 @@
+{
+	"info": {
+		"_postman_id": "61c5145c-9732-4f05-9a9a-75e418ab6a3d",
+		"name": "DigitalMoney",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20151235"
+	},
+	"item": [
+		{
+			"name": "Keycloak",
+			"item": [
+				{
+					"name": "OpenId Config",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login/Register",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"first_name\":\"pepe\",\r\n    \"last_name\":\"arnoldo\",\r\n    \"dni\":\"1014232323\",\r\n    \"email\":\"robert@gmail.com\",\r\n    \"phone\":\"3102522345\",\r\n    \"password\":\"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TokenByUserNamePassword",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"let responseJson=pm.response.json();\r",
+											"pm.globals.set(\"access_token\",responseJson.access_token)\r",
+											"pm.globals.set(\"refresh_token\",responseJson.refresh_token)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "client_id",
+											"value": "user-service",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "VoEW6NvyMkdo5hbpMN4i8UdhH2L906xS",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "password",
+											"type": "text"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "http://localhost:8082/*",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "miguel",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8082/realms/digital-money/protocol/openid-connect/token",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"realms",
+										"digital-money",
+										"protocol",
+										"openid-connect",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "TokenValid",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "text"
+										},
+										{
+											"key": "client_id",
+											"value": "user-service",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "VoEW6NvyMkdo5hbpMN4i8UdhH2L906xS",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8082/realms/:realmname/protocol/openid-connect/token/introspect",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"realms",
+										":realmname",
+										"protocol",
+										"openid-connect",
+										"token",
+										"introspect"
+									],
+									"variable": [
+										{
+											"key": "realmname",
+											"value": "digital-money"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "{{access_token}}",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "client_id",
+											"value": "user-service",
+											"type": "text"
+										},
+										{
+											"key": "client_secret",
+											"value": "VoEW6NvyMkdo5hbpMN4i8UdhH2L906xS",
+											"type": "text"
+										},
+										{
+											"key": "refresh_token",
+											"value": "{{refresh_token}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8082/realms/digital-money/protocol/openid-connect/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"realms",
+										"digital-money",
+										"protocol",
+										"openid-connect",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GetUsersXId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/email/:email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"email",
+								":email"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "miguel@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PatchUser",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"id\": 15,\r\n\"first_name\": \"clark\",\r\n\"last_name\": \"kent\",\r\n\"dni\": \"8888889\",\r\n\"email\": \"miguel@gmail.com\",\r\n\"phone\": \"6666655555\",\r\n\"password\": \"4321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserXInfoAccount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "GetAccountWithTransactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/accounts/:id/transactions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"accounts",
+								":id",
+								"transactions"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAccountById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/accounts/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"accounts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostAccount",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cvu\":\"1212121212\",\r\n    \"user_id\":15\r\n}\r\n\r\n\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8084/accounts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"accounts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PatchAccount",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/accounts/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"accounts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAccountByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/accounts/user/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"accounts",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "GetTransactionsByAccountId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8083/transactions/:accountId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"transactions",
+								":accountId"
+							],
+							"variable": [
+								{
+									"key": "accountId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"item": [
+				{
+					"name": "PostCard",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"Crédito\",\r\n    \"balance\":0.0,\r\n    \"accountId\": 1,\r\n    \"cardNumber\": \"LDLH6554558\",\r\n    \"accountHolder\":\"Edi\",\r\n    \"expireDate\": null,\r\n    \"bankEntity\":\"Bancolombia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8085/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCardById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cards/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cards",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCardByAccountId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cards/accounts/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cards",
+								"accounts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCardById",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8085/cards/55",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8085",
+							"path": [
+								"cards",
+								"55"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "keycloackhost",
+			"value": "localhost:8082"
+		}
+	]
+}

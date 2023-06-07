@@ -19,7 +19,7 @@ spring:
         hibernate.formal_sql: true
 #name
   application:
-    name: dh-digital-money-user-service
+    name: user-service
 #spring security
 
 #keycloack variables
@@ -28,13 +28,36 @@ dh:
     serverUrl: http://localhost:8082/
     realm: digital-money
     clientId: user-service
-    clientSecret: 4wH7rQQw3jU0lneiHMrF4DVDCGfZjeNB
+    clientSecret: ax3112PpZlMIgL9nLaIRzRAyHHWirYrT
 
 server:
   port: 8080
-
+#eureka config
 eureka:
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+
+#acuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+  endpoint:
+    info:
+      enabled: true
+    health:
+      enabled: true
+
+
+
+
 
