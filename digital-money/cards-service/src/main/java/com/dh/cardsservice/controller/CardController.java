@@ -51,4 +51,14 @@ public class CardController {
         Optional<Card> cardSearched = cardService.findCardById(id);
         return cardSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Long id){
+        if (Objects.isNull(cardService.findCardById(id))){
+            return ResponseEntity.notFound().build();
+        }else {
+            cardService.deleteCardById(id);
+            return ResponseEntity.ok("Se eliminó la tarjeta con id " + id);
+        }
+    }
 }
