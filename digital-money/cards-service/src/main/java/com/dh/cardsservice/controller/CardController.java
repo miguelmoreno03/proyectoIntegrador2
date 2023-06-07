@@ -54,11 +54,10 @@ public class CardController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable Long id){
-        if (Objects.isNull(cardService.findCardById(id))){
-            return ResponseEntity.notFound().build();
-        }else {
-            cardService.deleteCardById(id);
+        if (cardService.deleteCardById(id)){
             return ResponseEntity.ok("Se eliminó la tarjeta con id " + id);
+        }else {
+            return  ResponseEntity.notFound().build();
         }
     }
 }
