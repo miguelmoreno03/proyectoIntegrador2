@@ -28,9 +28,13 @@ public class CardService {
         return cardRepository.findById(id);
     }
 
-    public void deleteCardById(Long id) {
-        if (cardRepository.findById(id).isPresent()){
-            cardRepository.deleteById(id);
+    public boolean deleteCardById(Long id) {
+        Optional<Card> card = cardRepository.findById(id);
+        if (card.isPresent()){
+           cardRepository.deleteById(id);
+           return true;
+        }else {
+            return false;
         }
     }
 }
