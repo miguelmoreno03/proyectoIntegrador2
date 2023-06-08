@@ -15,5 +15,11 @@ public interface ITransactionFeignRepository {
     @GetMapping("/transactions/{accountId}" )
     Optional<List<Transaction>> findAllByAccountId(@PathVariable Long accountId);
 
+    @GetMapping("/transactions/all/{accountId}")
+    Optional<List<Transaction>> findTransactionsByAccountId(@PathVariable Long accountId);
+    @GetMapping("/transactions/all/{accountId}/{rangeA}/{rangeB}")
+    Optional<List<Transaction>> findTransactionsByAccountIdAndRange(@PathVariable Long accountId, @PathVariable Double rangeA,@PathVariable Double rangeB);
+
+
 
 }

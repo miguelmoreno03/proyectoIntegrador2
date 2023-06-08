@@ -34,6 +34,26 @@ public class AccountController {
         }
     }
 
+    @GetMapping("/{id}/activity")
+    public ResponseEntity<AccountTransactionsDTO>  findAllTransactionsByAccountId(@PathVariable Long id ,
+                                                                                  @RequestParam(required = false) Double rangeA,
+                                                                                  @RequestParam(required = false) Double rangeB)
+                                                                                  throws ResourceNotFountException {
+        try {
+            AccountTransactionsDTO transactionsDTO;
+
+            if (rangeA != null && rangeB != null) {
+                transactionsDTO = accountService.findTransactionsByAccountIdAndRange(id, rangeA, rangeB);
+            } else {
+                transactionsDTO = accountService.findTransactionsByAccountId(id);
+            }
+
+            return ResponseEntity.ok(transactionsDTO);
+        } catch (ResourceNotFountException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/{id}/cards")
     public ResponseEntity<AccountCardsDTO>  findAllCardsByAccountId(@PathVariable Long id ) throws ResourceNotFountException {
         try {

@@ -49,6 +49,16 @@ public class AccountService {
         Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
         return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
     }
+    public AccountTransactionsDTO findTransactionsByAccountId (Long id ) throws ResourceNotFountException {
+        Optional<List<Transaction>> response = transactionFeignRepository.findTransactionsByAccountId(id);
+        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
+        return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+    }
+    public AccountTransactionsDTO findTransactionsByAccountIdAndRange (Long id ,Double rangeA,Double rangeB) throws ResourceNotFountException {
+        Optional<List<Transaction>> response = transactionFeignRepository.findTransactionsByAccountIdAndRange(id, rangeA, rangeB);
+        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
+        return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+    }
 
     public AccountCardsDTO findAllCardsByAccountId (Long id ) throws ResourceNotFountException {
         Optional<List<Card>> response = cardFeignRepository.findAllByAccountId(id);

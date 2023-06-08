@@ -12,8 +12,13 @@ import java.util.Optional;
 public class TransactionService {
     @Autowired
     ITransactionRepository repository;
-    public Optional<List<Transaction>> listTransactionsByAccountId(Long id){
+    public Optional<List<Transaction>> listLastTransactionsByAccountId(Long id){
        return repository.findLatestTransactionsByAccountId(id);
     }
-
+    public Optional<List<Transaction>> transactionsByAccountId(Long id){
+        return repository.findTransactionsByAccountId(id);
+    }
+    public Optional<List<Transaction>> transactionsByAccountIdAndRange(Long id,Double rangeA,Double rangeB ){
+        return repository.findTransactionsByAccountIdAndAmountRange(id, rangeA, rangeB);
+    }
 }

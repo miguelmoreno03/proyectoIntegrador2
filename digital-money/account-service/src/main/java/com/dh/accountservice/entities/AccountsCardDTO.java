@@ -21,6 +21,6 @@ public class AccountsCardDTO {
 
     private Double balance;
 
-    @JsonIgnoreProperties(value = {"account_id"})
+    @JsonIgnoreProperties(value = {"accountId"})
     private Card cards;
 }

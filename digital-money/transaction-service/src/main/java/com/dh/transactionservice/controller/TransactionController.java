@@ -19,8 +19,18 @@ public class TransactionController {
     TransactionService transactionService;
 
     @GetMapping("/{id}")
+    public ResponseEntity<List<Transaction>> searchLatestTransactionsByAccountId (@PathVariable Long id )  {
+        Optional<List<Transaction>> transactionsSearched = transactionService.listLastTransactionsByAccountId(id);
+        return transactionsSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+    @GetMapping("/all/{id}")
     public ResponseEntity<List<Transaction>> searchTransactionsByAccountId (@PathVariable Long id )  {
-        Optional<List<Transaction>> transactionsSearched = transactionService.listTransactionsByAccountId(id);
+        Optional<List<Transaction>> transactionsSearched = transactionService.transactionsByAccountId(id);
+        return transactionsSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+    @GetMapping("/all/{accountId}/{rangeA}/{rangeB}")
+    public ResponseEntity<List<Transaction>> searchTransactionsByAccountIdAndRange (@PathVariable Long accountId, @PathVariable Double rangeA,@PathVariable Double rangeB )  {
+        Optional<List<Transaction>> transactionsSearched = transactionService.transactionsByAccountIdAndRange(accountId,rangeA,rangeB);
         return transactionsSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }
