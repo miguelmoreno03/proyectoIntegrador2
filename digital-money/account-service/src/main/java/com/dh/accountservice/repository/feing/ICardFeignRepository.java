@@ -1,7 +1,6 @@
 package com.dh.accountservice.repository.feing;
 
 import com.dh.accountservice.entities.Card;
-import jakarta.ws.rs.Path;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

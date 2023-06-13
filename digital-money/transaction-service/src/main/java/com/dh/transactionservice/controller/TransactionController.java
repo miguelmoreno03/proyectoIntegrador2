@@ -1,14 +1,14 @@
 package com.dh.transactionservice.controller;
 
 import com.dh.transactionservice.entities.Transaction;
+import com.dh.transactionservice.exceptions.BadRequestException;
+import com.dh.transactionservice.exceptions.ResourceNotFountException;
 import com.dh.transactionservice.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -32,5 +32,9 @@ public class TransactionController {
     public ResponseEntity<List<Transaction>> searchTransactionsByAccountIdAndRange (@PathVariable Long accountId, @PathVariable Double rangeA,@PathVariable Double rangeB )  {
         Optional<List<Transaction>> transactionsSearched = transactionService.transactionsByAccountIdAndRange(accountId,rangeA,rangeB);
         return transactionsSearched.map(ResponseEntity::ok).orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+    @PostMapping
+    public ResponseEntity <Transaction> createTransaction(@RequestBody Transaction transaction) throws BadRequestException {
+        return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
 }

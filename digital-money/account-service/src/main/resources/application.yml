@@ -1,4 +1,5 @@
 #conexion
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/digitalmoney
@@ -47,4 +48,5 @@ management:
       enabled: true
     health:
       enabled: true
+
 

@@ -10,10 +10,7 @@ import com.dh.accountservice.repository.feing.ITransactionFeignRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.io.IOException;
-import java.lang.module.ResolutionException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -86,6 +83,12 @@ public class AccountService {
 
     }
     public AccountDTO createAccount(AccountCreateRequestDTO account) throws IOException, BadRequestException {
+        if (!isValidCvuLength(account.getCvu())){
+            throw new BadRequestException("We cannot create the user account because the length of the cvu is not correct");
+        }
+        if(!validNumericCvu(account.getCvu())){
+            throw new BadRequestException("Invalid CVU format. The CVU must contain only numeric characters.");
+        }
         String alias = createAlias();
         Account account1 = new Account(account.getId(),alias,account.getCvu(),0.0, account.getUser_id(),null,null);
         if (accountRepository.findByAlias(alias).isPresent()){
@@ -136,6 +139,12 @@ public class AccountService {
         return words.get(random.nextInt(words.size())) + "." +
                 words.get(random.nextInt(words.size())) + "." +
                 words.get(random.nextInt(words.size()));
+    }
+    private boolean isValidCvuLength(String cvu){
+        return cvu.length() == 22;
+    }
+    private boolean validNumericCvu(String cvu){
+        return cvu.matches("\\d+");
     }
 
 }

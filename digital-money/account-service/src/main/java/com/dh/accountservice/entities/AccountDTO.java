@@ -1,6 +1,4 @@
 package com.dh.accountservice.entities;
-
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
