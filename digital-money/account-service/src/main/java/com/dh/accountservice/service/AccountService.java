@@ -43,25 +43,70 @@ public class AccountService {
     }
 
     public AccountTransactionsDTO findLastTransactionsByAccountId (Long id ) throws ResourceNotFountException {
-        Optional<List<Transaction>> response = transactionFeignRepository.findAllByAccountId(id);
-        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
-        return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+        Optional<Account> account = accountRepository.findById(id);
+        if(account.isPresent()){
+            Account extractecAccount = account.get();
+            try{
+                Optional<List<Transaction>> transactions =  transactionFeignRepository.findAllByAccountId(id);
+                return new AccountTransactionsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), transactions.get());
+            }catch (FeignException.NotFound e) {
+                throw new ResourceNotFountException("We don't found any Transactions associated  with this userAccount id: " +id );
+            } catch (FeignException.InternalServerError e ){
+                throw new ResourceNotFountException("We have problems  with the transactions-service try later");
+            }
+        } else {
+            throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
+        }
     }
     public AccountTransactionsDTO findTransactionsByAccountId (Long id ) throws ResourceNotFountException {
-        Optional<List<Transaction>> response = transactionFeignRepository.findTransactionsByAccountId(id);
-        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
-        return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+        Optional<Account> account = accountRepository.findById(id);
+        if(account.isPresent()){
+            Account extractecAccount = account.get();
+            try{
+                Optional<List<Transaction>> transactions = transactionFeignRepository.findTransactionsByAccountId(id);
+                return new AccountTransactionsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), transactions.get());
+            }catch (FeignException.NotFound e) {
+                throw new ResourceNotFountException("We don't found any Transactions associated  with this userAccount id: " +id );
+            } catch (FeignException.InternalServerError e ){
+                throw new ResourceNotFountException("We have problems  with the transactions-service try later");
+            }
+        } else {
+            throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
+        }
     }
     public AccountTransactionsDTO findTransactionsByAccountIdAndRange (Long id ,Double rangeA,Double rangeB) throws ResourceNotFountException {
-        Optional<List<Transaction>> response = transactionFeignRepository.findTransactionsByAccountIdAndRange(id, rangeA, rangeB);
-        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
-        return new AccountTransactionsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+        Optional<Account> account = accountRepository.findById(id);
+        if(account.isPresent()){
+            Account extractecAccount = account.get();
+            try{
+                Optional<List<Transaction>> transactions = transactionFeignRepository.findTransactionsByAccountIdAndRange(id, rangeA, rangeB);
+                return new AccountTransactionsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), transactions.get());
+            }catch (FeignException.NotFound e) {
+                throw new ResourceNotFountException("We don't found any Transactions associated  with this userAccount id: " +id +" and with the specific range");
+            } catch (FeignException.InternalServerError e ){
+                throw new ResourceNotFountException("We have problems  with the transactions-service try later");
+            }
+        } else {
+            throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
+        }
     }
 
     public AccountCardsDTO findAllCardsByAccountId (Long id ) throws ResourceNotFountException {
-        Optional<List<Card>> response = cardFeignRepository.findAllByAccountId(id);
-        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
-        return new AccountCardsDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+       Optional<Account> account = accountRepository.findById(id);
+       if(account.isPresent()){
+           Account extractecAccount = account.get();
+           try{
+               Optional<List<Card>> cards = cardFeignRepository.findAllByAccountId(id);
+               return new AccountCardsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), cards.get());
+           }catch (FeignException.NotFound e) {
+               throw new ResourceNotFountException("We don't found any Cards associated  with this userAccount id: " +id);
+           } catch (FeignException.InternalServerError e ){
+               throw new ResourceNotFountException("We have problems  with the cards-service try later");
+           }
+       } else {
+           throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
+       }
+
     }
 
     public AccountsCardDTO findAccountWithCardById(Long accountId, Long cardId) throws ResourceNotFountException {
