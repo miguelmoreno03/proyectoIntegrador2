@@ -7,12 +7,14 @@ import com.dh.userservice.repository.IUserRepository;
 
 import com.dh.userservice.repository.KeyCloakUserRepository;
 import com.dh.userservice.repository.feing.IAccountFeignRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Optional;
 
 
@@ -43,33 +45,33 @@ public class UserService {
             AppUser  userResponse = user.get();
             return new AppUserResponseDTO(userResponse.getId(), userResponse.getFirst_name(), userResponse.getLast_name(), userResponse.getDni(), userResponse.getEmail(),userResponse.getPhone());
         }else {
-            throw new ResourceNotFountException("We don´t found any user with the id :" + id);
+            throw new ResourceNotFountException("We don´t found any user with the id : " + id);
         }
     }
     public AppUserAccountDTO findUserWithAccountInformation (Long userId) throws ResourceNotFountException {
         Optional<AppUser> user = userRepository.findById(userId);
         if (user.isPresent()){
             AppUser extractedUser = user.get();
-            Optional<Account> account = accountFeignRepository.findAccountByUserId(userId);
-            if (account.isPresent()){
-                extractedUser.setAccount(account.get());
-            } else {
-                extractedUser.setAccount(null);
+            try {
+                Optional<Account> account = accountFeignRepository.findAccountByUserId(userId);
+                account.ifPresent(extractedUser::setAccount);
+
+                return new AppUserAccountDTO(extractedUser.getId(), extractedUser.getFirst_name(), extractedUser.getLast_name(), extractedUser.getDni(), extractedUser.getEmail(), extractedUser.getPhone(), extractedUser.getAccount());
+            } catch (FeignException.NotFound e) {
+                throw new ResourceNotFountException("We don't found any account associated  with this user id: " + userId);
+            } catch (FeignException.InternalServerError e ){
+                throw new ResourceNotFountException("We have problems  with the account-service try later");
             }
-         return new AppUserAccountDTO(extractedUser.getId(),extractedUser.getFirst_name(),extractedUser.getLast_name(),extractedUser.getDni(),extractedUser.getEmail(), extractedUser.getPhone(),extractedUser.getAccount());
-        }else {
-            throw new ResourceNotFountException("We don´t found any account with the id :" + userId);
+        } else {
+            throw new ResourceNotFountException("We don't found any user with the id: " + userId);
         }
     }
-
-
-
 @Transactional
-    public AppUserResponseDTO createUser(AppUser appuser) throws BadRequestException ,IOException{
+    public AppUserResponseDTO createUser(AppUser appuser) throws BadRequestException{
 
      Optional<AppUser>searchedUser = userRepository.findByEmail(appuser.getEmail());
      if(searchedUser.isPresent()){
-       throw new BadRequestException("This email is already associated with an user created");
+       throw new BadRequestException("This email is already associated with a user created");
      }else {
          //TODO go and verify the email
          //TODO assign role

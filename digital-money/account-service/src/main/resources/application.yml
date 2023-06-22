@@ -1,11 +1,11 @@
 #conexion
-
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/digitalmoney
     username: root
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   #jpa
   jpa:
     database:
@@ -48,5 +48,10 @@ management:
       enabled: true
     health:
       enabled: true
-
+springdoc:
+  swagger-ui:
+    path: /digitalmoney.html
+    operations-sorter: method
+  api-docs:
+    path: /api-docs
 

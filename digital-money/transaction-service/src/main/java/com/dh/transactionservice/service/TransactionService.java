@@ -14,14 +14,29 @@ import java.util.Optional;
 public class TransactionService {
     @Autowired
     ITransactionRepository repository;
-    public Optional<List<Transaction>> listLastTransactionsByAccountId(Long id){
-       return repository.findLatestTransactionsByAccountId(id);
+    public Optional<List<Transaction>> listLastTransactionsByAccountId(Long id) throws ResourceNotFountException {
+       Optional<List<Transaction>>  transactions = repository.findLatestTransactionsByAccountId(id);
+       if(transactions.isPresent()){
+           throw new ResourceNotFountException("We did not find any transactions related to the account ID.");
+       }else{
+           return transactions;
+       }
     }
-    public Optional<List<Transaction>> transactionsByAccountId(Long id){
-        return repository.findTransactionsByAccountId(id);
+    public Optional<List<Transaction>> transactionsByAccountId(Long id) throws ResourceNotFountException {
+        Optional<List<Transaction>>  transactions =repository.findTransactionsByAccountId(id);
+        if(transactions.isPresent()){
+            throw new ResourceNotFountException("We did not find any transactions related to the account ID.");
+        }else{
+            return transactions;
+        }
     }
-    public Optional<List<Transaction>> transactionsByAccountIdAndRange(Long id,Double rangeA,Double rangeB ){
-        return repository.findTransactionsByAccountIdAndAmountRange(id, rangeA, rangeB);
+    public Optional<List<Transaction>> transactionsByAccountIdAndRange(Long id,Double rangeA,Double rangeB ) throws ResourceNotFountException {
+        Optional<List<Transaction>>  transactions = repository.findTransactionsByAccountIdAndAmountRange(id, rangeA, rangeB);
+        if(transactions.isPresent()){
+            throw new ResourceNotFountException("We did not find any transactions related to the account ID.");
+        }else{
+            return transactions;
+        }
     }
     public Transaction createTransaction (Transaction transaction) throws BadRequestException {
         if (!isValidCvuLength(transaction.getDestination_cvu())){

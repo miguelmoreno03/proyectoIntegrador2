@@ -1,1 +1,15 @@
 
+[2023-06-1521:10:44] [ ERROR] [GlobalException:15] We can´t update the user because the user don´t exist 
+[2023-06-1521:53:45] [ ERROR] [GlobalException:15] This email is already associated with an user created
+[2023-06-1522:28:10] [ ERROR] [GlobalException:15] We cannot create the transaction because the length of the destination_cvu is not correct
+[2023-06-1522:28:32] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the origin_cvu is not correct
+[2023-06-1522:28:42] [ ERROR] [GlobalException:15] Invalid CVU format. The origin_cvu must contain only numeric characters.
+[2023-06-1522:28:52] [ ERROR] [GlobalException:15] Invalid CVU format. The destination_cvu must contain only numeric characters.
+[2023-06-1717:48:59] [ ERROR] [GlobalException:15] This email is already associated with a user created
+[2023-06-1717:53:45] [ ERROR] [GlobalException:15] We can´t update the user because the user don´t exist 
+[2023-06-2120:46:33] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
+[2023-06-2120:47:40] [ ERROR] [GlobalException:15] Invalid CVU format. The CVU must contain only numeric characters.
+[2023-06-2120:51:41] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
+[2023-06-2121:12:51] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
+[2023-06-2121:13:25] [ ERROR] [GlobalException:15] We can´t update the user account because the user don´t exist
+[2023-06-2121:18:31] [ ERROR] [GlobalException:15] We can´t create the user account because the cvu associated in the account its already in use 

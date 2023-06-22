@@ -7,6 +7,7 @@ import com.dh.accountservice.repository.IAccountRepository;
 import com.dh.accountservice.repository.feing.ICardFeignRepository;
 import com.dh.accountservice.repository.feing.ITransactionFeignRepository;
 
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -64,13 +65,24 @@ public class AccountService {
     }
 
     public AccountsCardDTO findAccountWithCardById(Long accountId, Long cardId) throws ResourceNotFountException {
-        Optional<Card> response = cardFeignRepository.findCardById(cardId);
-        Account account = accountRepository.findById(accountId).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + accountId));
-        return new AccountsCardDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(), response.get());
+    Optional<Account> account = accountRepository.findById(accountId);
+    if (account.isPresent()){
+        Account extractedAccount = account.get();
+        try{
+            Optional<Card> card = cardFeignRepository.findCardById(cardId);
+            return new AccountsCardDTO(extractedAccount.getId(), extractedAccount.getAlias(), extractedAccount.getCvu(), extractedAccount.getBalance(), card.get());
+        }catch (FeignException.NotFound e) {
+            throw new ResourceNotFountException("We don't found any Card associated  with this userAccount id: " +accountId);
+        } catch (FeignException.InternalServerError e ){
+            throw new ResourceNotFountException("We have problems  with the cards-service try later");
+        }
+    } else {
+        throw new ResourceNotFountException("We don't found any userAccount with the id: " + accountId);
+    }
     }
 
     public AccountDTO findAccountById (Long id) throws ResourceNotFountException{
-        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("No account found with ID: " + id));
+        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("We don´t found any account associated with the id: " + id));
         return  new AccountDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(),account.getUser_id());
     }
     public AccountDTO findAccountByUserId (Long userId) throws ResourceNotFountException {
