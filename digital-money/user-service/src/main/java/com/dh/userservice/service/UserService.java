@@ -58,7 +58,7 @@ public class UserService {
 
                 return new AppUserAccountDTO(extractedUser.getId(), extractedUser.getFirst_name(), extractedUser.getLast_name(), extractedUser.getDni(), extractedUser.getEmail(), extractedUser.getPhone(), extractedUser.getAccount());
             } catch (FeignException.NotFound e) {
-                throw new ResourceNotFountException("We don't found any account associated  with this user id: " + userId);
+                throw new ResourceNotFountException(e.getMessage());
             } catch (FeignException.InternalServerError e ){
                 throw new ResourceNotFountException("We have problems  with the account-service try later");
             }

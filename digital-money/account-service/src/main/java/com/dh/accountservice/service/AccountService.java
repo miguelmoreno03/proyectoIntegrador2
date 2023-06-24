@@ -2,6 +2,7 @@ package com.dh.accountservice.service;
 
 import com.dh.accountservice.entities.*;
 import com.dh.accountservice.exceptions.BadRequestException;
+import com.dh.accountservice.exceptions.ConflictException;
 import com.dh.accountservice.exceptions.ResourceNotFountException;
 import com.dh.accountservice.repository.IAccountRepository;
 import com.dh.accountservice.repository.feing.ICardFeignRepository;
@@ -29,17 +30,29 @@ public class AccountService {
     ICardFeignRepository cardFeignRepository;
 
 
-    public ResponseEntity<Card> saveCardForAccount(Long accountId, CardCreateDTO cardCreateDTO) {
-        Card card = new Card();
-        card.setType(cardCreateDTO.getType());
-        card.setBalance(cardCreateDTO.getBalance());
-        card.setAccountId(accountId);
-        card.setCardNumber(cardCreateDTO.getCardNumber());
-        card.setAccountHolder(cardCreateDTO.getAccountHolder());
-        card.setExpireDate(cardCreateDTO.getExpireDate());
-        card.setBankEntity(cardCreateDTO.getBankEntity());
+    public ResponseEntity<Card> saveCardForAccount(Long accountId, CardCreateDTO cardCreateDTO) throws BadRequestException, ConflictException {
+       Optional<Account> account = accountRepository.findById(accountId);
+       if (account.isPresent()){
+           Card card = new Card();
+           card.setType(cardCreateDTO.getType());
+           card.setBalance(cardCreateDTO.getBalance());
+           card.setAccountId(accountId);
+           card.setCardNumber(cardCreateDTO.getCardNumber());
+           card.setAccountHolder(cardCreateDTO.getAccountHolder());
+           card.setExpireDate(cardCreateDTO.getExpireDate());
+           card.setBankEntity(cardCreateDTO.getBankEntity());
+           try{
+               return cardFeignRepository.saveCard(card);
+           }catch (FeignException.Conflict e){
+               throw new ConflictException(e.getMessage());
+           }catch (FeignException.BadRequest e){
+               throw new BadRequestException(e.getMessage());
+           }
 
-        return cardFeignRepository.saveCard(card);
+       }else{
+           throw new BadRequestException("you are trying to create a card and associate it from a non-existent account");
+       }
+
     }
 
     public AccountTransactionsDTO findLastTransactionsByAccountId (Long id ) throws ResourceNotFountException {
@@ -49,10 +62,8 @@ public class AccountService {
             try{
                 Optional<List<Transaction>> transactions =  transactionFeignRepository.findAllByAccountId(id);
                 return new AccountTransactionsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), transactions.get());
-            }catch (FeignException.NotFound e) {
-                throw new ResourceNotFountException("We don't found any Transactions associated  with this userAccount id: " +id );
-            } catch (FeignException.InternalServerError e ){
-                throw new ResourceNotFountException("We have problems  with the transactions-service try later");
+            }catch (FeignException.NotFound | FeignException.InternalServerError e) {
+                throw new ResourceNotFountException(e.getMessage());
             }
         } else {
             throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
@@ -65,10 +76,8 @@ public class AccountService {
             try{
                 Optional<List<Transaction>> transactions = transactionFeignRepository.findTransactionsByAccountId(id);
                 return new AccountTransactionsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), transactions.get());
-            }catch (FeignException.NotFound e) {
-                throw new ResourceNotFountException("We don't found any Transactions associated  with this userAccount id: " +id );
-            } catch (FeignException.InternalServerError e ){
-                throw new ResourceNotFountException("We have problems  with the transactions-service try later");
+            }catch (FeignException.NotFound | FeignException.InternalServerError e) {
+                throw new ResourceNotFountException(e.getMessage());
             }
         } else {
             throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
@@ -81,10 +90,8 @@ public class AccountService {
             try{
                 Optional<List<Transaction>> transactions = transactionFeignRepository.findTransactionsByAccountIdAndRange(id, rangeA, rangeB);
                 return new AccountTransactionsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), transactions.get());
-            }catch (FeignException.NotFound e) {
-                throw new ResourceNotFountException("We don't found any Transactions associated  with this userAccount id: " +id +" and with the specific range");
-            } catch (FeignException.InternalServerError e ){
-                throw new ResourceNotFountException("We have problems  with the transactions-service try later");
+            }catch (FeignException.NotFound | FeignException.InternalServerError e) {
+                throw new ResourceNotFountException(e.getMessage());
             }
         } else {
             throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
@@ -98,10 +105,8 @@ public class AccountService {
            try{
                Optional<List<Card>> cards = cardFeignRepository.findAllByAccountId(id);
                return new AccountCardsDTO(extractecAccount.getId(), extractecAccount.getAlias(),extractecAccount.getCvu(), extractecAccount.getBalance(), cards.get());
-           }catch (FeignException.NotFound e) {
-               throw new ResourceNotFountException("We don't found any Cards associated  with this userAccount id: " +id);
-           } catch (FeignException.InternalServerError e ){
-               throw new ResourceNotFountException("We have problems  with the cards-service try later");
+           }catch (FeignException.NotFound | FeignException.InternalServerError e) {
+               throw new ResourceNotFountException(e.getMessage());
            }
        } else {
            throw new ResourceNotFountException("We don't found any userAccount with the id: " + id);
@@ -116,10 +121,8 @@ public class AccountService {
         try{
             Optional<Card> card = cardFeignRepository.findCardById(cardId);
             return new AccountsCardDTO(extractedAccount.getId(), extractedAccount.getAlias(), extractedAccount.getCvu(), extractedAccount.getBalance(), card.get());
-        }catch (FeignException.NotFound e) {
-            throw new ResourceNotFountException("We don't found any Card associated  with this userAccount id: " +accountId);
-        } catch (FeignException.InternalServerError e ){
-            throw new ResourceNotFountException("We have problems  with the cards-service try later");
+        }catch (FeignException.NotFound | FeignException.InternalServerError e) {
+            throw new ResourceNotFountException(e.getMessage());
         }
     } else {
         throw new ResourceNotFountException("We don't found any userAccount with the id: " + accountId);
@@ -127,8 +130,12 @@ public class AccountService {
     }
 
     public AccountDTO findAccountById (Long id) throws ResourceNotFountException{
-        Account account = accountRepository.findById(id).orElseThrow(()-> new ResourceNotFountException("We don´t found any account associated with the id: " + id));
-        return  new AccountDTO(account.getId(), account.getAlias(), account.getCvu(), account.getBalance(),account.getUser_id());
+        Optional<Account> account= accountRepository.findById(id);
+        if (account.isPresent()){
+            Account extractedAccount = account.get();
+            return  new AccountDTO(extractedAccount.getId(),extractedAccount.getAlias(), extractedAccount.getCvu(),extractedAccount.getBalance(),extractedAccount.getUser_id());
+        }
+       throw new ResourceNotFountException("we don´t found any account with the id : "+ id);
     }
     public AccountDTO findAccountByUserId (Long userId) throws ResourceNotFountException {
        Optional<Account> account= accountRepository.findByUserId(userId);
@@ -143,7 +150,7 @@ public class AccountService {
         if (!isValidCvuLength(account.getCvu())){
             throw new BadRequestException("We cannot create the user account because the length of the cvu is not correct");
         }
-        if(!validNumericCvu(account.getCvu())){
+        if(!validNumeric(account.getCvu())){
             throw new BadRequestException("Invalid CVU format. The CVU must contain only numeric characters.");
         }
         String alias = createAlias();
@@ -200,7 +207,7 @@ public class AccountService {
     private boolean isValidCvuLength(String cvu){
         return cvu.length() == 22;
     }
-    private boolean validNumericCvu(String cvu){
+    private boolean validNumeric(String cvu){
         return cvu.matches("\\d+");
     }
 

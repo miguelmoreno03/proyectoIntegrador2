@@ -62,17 +62,14 @@ public class TransactionController {
     @Operation(summary = "Create a transaction ",description = "We create a transaction with the required body, create the transaction only if the created body meets all the requirements")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",content = @Content(schema = @Schema(implementation = Transaction.class))),
-            @ApiResponse(responseCode = "400",description = "We cannot create the transaction because the length of the destination_cvu is not correct. <br> <br> " +
-                    "Invalid CVU format. The destination_cvu must contain only numeric characters. <br> <br>"+
-                    "We cannot create the user account because the length of the origin_cvu is not correct.<br><br>"+
-                    "Invalid CVU format. The origin_cvu must contain only numeric characters.",content = @Content(schema = @Schema(implementation = Void.class)))
+            @ApiResponse(responseCode = "400",description = "<ul><li>We cannot create the transaction because the length of the destination_cvu is not correct. </li> " +
+                    "<li>Invalid CVU format. The destination_cvu must contain only numeric characters.</li>"+
+                    "<li>We cannot create the user account because the length of the origin_cvu is not correct.</li>"+
+                    "<li>Invalid CVU format. The origin_cvu must contain only numeric characters.</li>",content = @Content(schema = @Schema(implementation = Void.class)))
     })
     @PostMapping
     public ResponseEntity <Transaction> createTransaction(@RequestBody Transaction transaction) throws BadRequestException {
         return ResponseEntity.ok(transactionService.createTransaction(transaction));
     }
-    @ExceptionHandler(ResourceNotFountException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFountException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
+
 }

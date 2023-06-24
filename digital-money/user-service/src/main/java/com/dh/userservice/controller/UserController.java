@@ -54,8 +54,8 @@ public class UserController {
     @Operation(summary = "Get a User by Id with the account information  ",description = "Obtain the information of an existing user and the Account  information , if it does not find it, it returns a not found")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",content = @Content(schema = @Schema(implementation = AppUserAccountDTO.class))),
-            @ApiResponse(responseCode = "404",description = "We don't found any account associated  with this user id:  + userId <br> <br> " +
-                    "We don't found any user with the id:  + userId",content = @Content(schema = @Schema(implementation = Void.class))),
+            @ApiResponse(responseCode = "404",description = "<ul> <li>we don´t found any account with the user_id : +user id  + userId  </li>" +
+                    "<li>We don't found any user with the id:  + userId<li>",content = @Content(schema = @Schema(implementation = Void.class))),
             @ApiResponse(responseCode = "500",description = "We have problems  with the account-service try later",content = @Content(schema = @Schema(implementation = Void.class))),
 
     })

@@ -1,15 +1,23 @@
-
-[2023-06-1521:10:44] [ ERROR] [GlobalException:15] We can´t update the user because the user don´t exist 
-[2023-06-1521:53:45] [ ERROR] [GlobalException:15] This email is already associated with an user created
-[2023-06-1522:28:10] [ ERROR] [GlobalException:15] We cannot create the transaction because the length of the destination_cvu is not correct
-[2023-06-1522:28:32] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the origin_cvu is not correct
-[2023-06-1522:28:42] [ ERROR] [GlobalException:15] Invalid CVU format. The origin_cvu must contain only numeric characters.
-[2023-06-1522:28:52] [ ERROR] [GlobalException:15] Invalid CVU format. The destination_cvu must contain only numeric characters.
-[2023-06-1717:48:59] [ ERROR] [GlobalException:15] This email is already associated with a user created
-[2023-06-1717:53:45] [ ERROR] [GlobalException:15] We can´t update the user because the user don´t exist 
-[2023-06-2120:46:33] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
-[2023-06-2120:47:40] [ ERROR] [GlobalException:15] Invalid CVU format. The CVU must contain only numeric characters.
-[2023-06-2120:51:41] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
-[2023-06-2121:12:51] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
-[2023-06-2121:13:25] [ ERROR] [GlobalException:15] We can´t update the user account because the user don´t exist
-[2023-06-2121:18:31] [ ERROR] [GlobalException:15] We can´t create the user account because the cvu associated in the account its already in use 
+[2023-06-2317:38:21] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:38:26] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:38:36] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:38:41] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:39:05] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:39:09] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:44:08] [ ERROR] [GlobalException:20] we don´t found any account with the id : 2
+[2023-06-2317:44:19] [ ERROR] [GlobalException:20] we don´t found any account with the user_id :2
+[2023-06-2317:45:25] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:45:25] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8083/transactions/1] [ITransactionFeignRepository#findAllByAccountId(Long)]: [We did not find any transactions related to the account ID.]
+[2023-06-2317:45:35] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:45:35] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8083/transactions/all/1] [ITransactionFeignRepository#findTransactionsByAccountId(Long)]: [We did not find any transactions related to the account ID.]
+[2023-06-2317:45:39] [ ERROR] [GlobalException:20] We did not find any transactions related to the account ID.
+[2023-06-2317:45:40] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8083/transactions/all/1/5000.0/20000.0] [ITransactionFeignRepository#findTransactionsByAccountIdAndRange(Long,Double,Double)]: [We did not find any transactions related to the account ID.]
+[2023-06-2317:45:48] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8085/cards/accounts/1] [ICardFeignRepository#findAllByAccountId(Long)]: [We did not found any cards associated with the account ID.]
+[2023-06-2317:45:53] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8085/cards/1] [ICardFeignRepository#findCardById(Long)]: [We don´t found any card associated with the id : 1]
+[2023-06-2317:46:01] [ ERROR] [GlobalException:15] Invalid CVU format. The CVU must contain only numeric characters.
+[2023-06-2317:46:08] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
+[2023-06-2317:46:16] [ ERROR] [GlobalException:15] you are trying to create a card and associate it from a non-existent account
+[2023-06-2317:46:28] [ ERROR] [GlobalException:25] [409] during [POST] to [http://localhost:8085/cards] [ICardFeignRepository#saveCard(Card)]: [We got a problem the card number it´s already associated with the user account]
+[2023-06-2317:46:34] [ ERROR] [GlobalException:15] [400] during [POST] to [http://localhost:8085/cards] [ICardFeignRepository#saveCard(Card)]: [We can´t create the card, the card number must be only numeric characters ]
+[2023-06-2317:46:40] [ ERROR] [GlobalException:15] you are trying to create a card and associate it from a non-existent account
+[2023-06-2317:47:08] [ ERROR] [GlobalException:15] We can´t update the user account because the user don´t exist

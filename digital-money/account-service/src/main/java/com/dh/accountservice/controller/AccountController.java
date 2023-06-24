@@ -2,6 +2,7 @@ package com.dh.accountservice.controller;
 
 import com.dh.accountservice.entities.*;
 import com.dh.accountservice.exceptions.BadRequestException;
+import com.dh.accountservice.exceptions.ConflictException;
 import com.dh.accountservice.exceptions.ResourceNotFountException;
 import com.dh.accountservice.service.AccountService;
 import feign.Response;
@@ -26,9 +27,17 @@ import java.io.IOException;
 public class AccountController {
     @Autowired
     AccountService accountService;
-
+    @Operation(summary = "Adding a card from account ",description = "Create a new card from the account service ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AccountTransactionsDTO.class))),
+            @ApiResponse(responseCode = "400",description = "<ul> <li>you are trying to create a card and associate it from a non-existent account.</li>"  +
+                    "<li>We can´t create the card, the card number must be only numeric characters.</li> " +
+                    "<li>We don't found any userAccount with the id:  + userAccountId. </li></ul>" ,content = @Content(schema = @Schema(implementation = Void.class))),
+            @ApiResponse(responseCode = "409",description = "<ul> <li> We got a problem the card number it´s already associated with the user account</li>" +
+                    "<li></li> </ul>")
+    })
     @PostMapping("/{id}/cards")
-    public ResponseEntity<Card> saveCardForAccount(@PathVariable Long id, @RequestBody CardCreateDTO cardCreateDTO) throws IOException, BadRequestException {
+    public ResponseEntity<Card> saveCardForAccount(@PathVariable Long id, @RequestBody CardCreateDTO cardCreateDTO) throws IOException, BadRequestException, ConflictException {
         return accountService.saveCardForAccount(id, cardCreateDTO);
     }
     @Operation(summary = "Get an Account  with the last 5 transactions information ",description = "Obtain the information of an existing Account with his last transactions from the database, if it does not find it, it returns a not found")
@@ -130,10 +139,7 @@ public class AccountController {
     public ResponseEntity<AccountDTO>  patchAccount (@PathVariable Long id)  throws IOException, BadRequestException{
         return ResponseEntity.ok(accountService.patchAccount(id));
    }
-    @ExceptionHandler(ResourceNotFountException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFountException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-    }
+
 
 
 }

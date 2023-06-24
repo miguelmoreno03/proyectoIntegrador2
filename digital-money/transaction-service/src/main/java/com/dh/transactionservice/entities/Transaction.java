@@ -21,11 +21,9 @@ public class Transaction {
     private Long id;
    @Column
    @NotNull
-   @Size(min = 1, max = 250)
     private Long account_id;
     @Column
     @NotNull
-    @Size(min = 1, max = 250)
     private LocalDateTime date;
     @Column
     @NotNull

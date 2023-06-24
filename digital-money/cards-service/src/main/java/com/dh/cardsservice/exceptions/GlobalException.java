@@ -15,4 +15,14 @@ public class GlobalException {
         logger.error(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+    @ExceptionHandler({ResourceNotFountException.class})
+    public ResponseEntity<String> processErrorResourceNotFound(ResourceNotFountException ex){
+        logger.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    @ExceptionHandler ({ConflictException.class})
+    public ResponseEntity<String> processConflictException (ConflictException ex){
+        logger.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
 }

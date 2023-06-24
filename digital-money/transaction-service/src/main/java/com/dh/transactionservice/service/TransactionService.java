@@ -16,7 +16,7 @@ public class TransactionService {
     ITransactionRepository repository;
     public Optional<List<Transaction>> listLastTransactionsByAccountId(Long id) throws ResourceNotFountException {
        Optional<List<Transaction>>  transactions = repository.findLatestTransactionsByAccountId(id);
-       if(transactions.isPresent()){
+       if(transactions.get().isEmpty()){
            throw new ResourceNotFountException("We did not find any transactions related to the account ID.");
        }else{
            return transactions;
@@ -24,7 +24,7 @@ public class TransactionService {
     }
     public Optional<List<Transaction>> transactionsByAccountId(Long id) throws ResourceNotFountException {
         Optional<List<Transaction>>  transactions =repository.findTransactionsByAccountId(id);
-        if(transactions.isPresent()){
+        if(transactions.get().isEmpty()){
             throw new ResourceNotFountException("We did not find any transactions related to the account ID.");
         }else{
             return transactions;
@@ -32,7 +32,7 @@ public class TransactionService {
     }
     public Optional<List<Transaction>> transactionsByAccountIdAndRange(Long id,Double rangeA,Double rangeB ) throws ResourceNotFountException {
         Optional<List<Transaction>>  transactions = repository.findTransactionsByAccountIdAndAmountRange(id, rangeA, rangeB);
-        if(transactions.isPresent()){
+        if(transactions.get().isEmpty()){
             throw new ResourceNotFountException("We did not find any transactions related to the account ID.");
         }else{
             return transactions;
