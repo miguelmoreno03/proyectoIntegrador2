@@ -12,6 +12,8 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -53,6 +55,38 @@ public class AccountService {
            throw new BadRequestException("you are trying to create a card and associate it from a non-existent account");
        }
 
+    }
+    @Transactional
+    public Transaction createTransaction(CreateTransactionDTO transactionRequest,Long id) throws BadRequestException {
+      Optional<Account> userAccount = accountRepository.findById(id);
+      if (userAccount.isEmpty()){
+          throw new BadRequestException("You´re trying to create a transaction from a  non-existent account. ");
+      }else{
+          if (userAccount.get().getBalance() < transactionRequest.getAmount()){
+             throw new BadRequestException("You do not have the necessary money to make the transaction try to add funds and try again later.");
+          }else {
+              Optional<Account> searchedAccount = accountRepository.findByCvu(transactionRequest.getDestination_cvu());
+              userAccount.get().setBalance(userAccount.get().getBalance()- transactionRequest.getAmount());
+              searchedAccount.ifPresent(account -> account.setBalance(account.getBalance() + transactionRequest.getAmount()));
+              accountRepository.save(userAccount.get());
+              accountRepository.save(searchedAccount.get());
+          }
+          Transaction transaction = new Transaction();
+          transaction.setAccount_id(id);
+          transaction.setDescription(transactionRequest.getDescription());
+          transaction.setAmount(transactionRequest.getAmount());
+          transaction.setDestination_cvu(transactionRequest.getDestination_cvu());
+          transaction.setOrigin_cvu(userAccount.get().getCvu());
+          transaction.setType(transactionRequest.getType());
+          try{
+             return transactionFeignRepository.createTransaction(transaction);
+          } catch (FeignException.BadRequest ex){
+              throw new BadRequestException(ex.getMessage());
+          }catch (InternalError ex ){
+              throw new BadRequestException("We have problems with the transaction-service try later. ");
+          }
+
+      }
     }
 
     public AccountTransactionsDTO findLastTransactionsByAccountId (Long id ) throws ResourceNotFountException {

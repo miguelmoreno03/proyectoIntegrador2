@@ -7,6 +7,7 @@ import com.dh.transactionservice.repository.ITransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,8 +50,11 @@ public class TransactionService {
         } else if (!validNumericCvu(transaction.getOrigin_cvu())) {
             throw new BadRequestException("Invalid CVU format. The origin_cvu must contain only numeric characters.");
         }
-
+        transaction.setDate(LocalDateTime.now());
         return repository.save(transaction);
+    }
+    public void generateBill(){
+
     }
     private boolean isValidCvuLength(String cvu){
         return cvu.length() == 22;

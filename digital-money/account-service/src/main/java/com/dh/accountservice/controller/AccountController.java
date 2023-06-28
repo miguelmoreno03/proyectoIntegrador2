@@ -129,6 +129,11 @@ public class AccountController {
     public ResponseEntity<AccountDTO> createAccount (@RequestBody AccountCreateRequestDTO account) throws IOException, BadRequestException {
         return ResponseEntity.ok(accountService.createAccount(account));
    }
+   @PostMapping("/{id}/transferences")
+   public ResponseEntity<Transaction> createTransaction (@RequestBody CreateTransactionDTO transactionDTO,@PathVariable Long id) throws BadRequestException {
+
+        return ResponseEntity.ok(accountService.createTransaction(transactionDTO,id));
+   }
     @Operation(summary = "Patch an Account ",description = "Patch an Account from  my database with the parameters  provided in the body")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = AccountDTO.class))),

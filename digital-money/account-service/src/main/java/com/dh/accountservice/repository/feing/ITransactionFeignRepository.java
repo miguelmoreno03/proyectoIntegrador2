@@ -5,6 +5,8 @@ import com.dh.accountservice.entities.Transaction;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,8 @@ public interface ITransactionFeignRepository {
     Optional<List<Transaction>> findTransactionsByAccountId(@PathVariable Long accountId);
     @GetMapping("/transactions/all/{accountId}/{rangeA}/{rangeB}")
     Optional<List<Transaction>> findTransactionsByAccountIdAndRange(@PathVariable Long accountId, @PathVariable Double rangeA,@PathVariable Double rangeB);
+    @PostMapping ("/transactions")
+    Transaction createTransaction(@RequestBody Transaction transaction);
 
 
 
