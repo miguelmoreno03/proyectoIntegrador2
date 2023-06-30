@@ -32,3 +32,30 @@
 [2023-06-2622:41:14] [ ERROR] [GlobalException:15] Invalid CVU format. The destination_cvu must contain only numeric characters.
 [2023-06-2622:41:14] [ ERROR] [GlobalException:15] [400] during [POST] to [http://localhost:8083/transactions] [ITransactionFeignRepository#createTransaction(Transaction)]: [Invalid CVU format. The destination_cvu must contain only numeric characters.]
 [2023-06-2622:46:27] [ ERROR] [GlobalException:15] You do not have the necessary money to make the transaction try to add funds and try again later.
+[2023-06-2918:14:01] [ ERROR] [GlobalException:15] PDF file not found: C:\tmp\transaction.pdf (El sistema no puede encontrar la ruta especificada)
+[2023-06-2918:25:20] [ ERROR] [GlobalException:15] You´re trying to generate a receipt of a non-existence transaction
+[2023-06-2918:25:27] [ ERROR] [GlobalException:15] PDF file not found: C:\transaction.pdf (Acceso denegado)
+[2023-06-2918:29:51] [ ERROR] [GlobalException:15] You´re trying to generate a receipt of a non-existence transaction
+[2023-06-2918:29:54] [ ERROR] [GlobalException:15] PDF file not found: C: (Acceso denegado)
+[2023-06-2918:31:33] [ ERROR] [GlobalException:15] PDF file not found: C:\transaction.pdf (Acceso denegado)
+[2023-06-2919:39:19] [ ERROR] [GlobalException:15] Error in the input or output of the document java.io.FileNotFoundException: D:\proyectointegrador2\equipo-07\digital-money\transaction-service\target\classes\Logo%2003.svg (El sistema no puede encontrar el archivo especificado)
+[2023-06-2919:39:22] [ ERROR] [GlobalException:15] Error in the input or output of the document java.io.FileNotFoundException: D:\proyectointegrador2\equipo-07\digital-money\transaction-service\target\classes\Logo%2003.svg (El sistema no puede encontrar el archivo especificado)
+[2023-06-2919:40:36] [ ERROR] [GlobalException:15] Error in the input or output of the document java.io.IOException: file:/D:/proyectointegrador2/equipo-07/digital-money/transaction-service/target/classes/logo.svg is not a recognized imageformat.
+[2023-06-2919:40:40] [ ERROR] [GlobalException:15] Error in the input or output of the document java.io.IOException: file:/D:/proyectointegrador2/equipo-07/digital-money/transaction-service/target/classes/logo.svg is not a recognized imageformat.
+[2023-06-2919:48:49] [ ERROR] [GlobalException:15] Error in the input or output of the document java.io.IOException: file:/D:/proyectointegrador2/equipo-07/digital-money/transaction-service/target/classes/logo.svg is not a recognized imageformat.
+[2023-06-2920:26:06] [ ERROR] [GlobalException:15] You´re trying to generate a receipt of a non-existence transaction
+[2023-06-2920:34:42] [ ERROR] [GlobalException:15] You´re trying to generate a receipt of a non-existence transaction
+[2023-06-2921:21:49] [ ERROR] [GlobalException:20] You´re trying to get a receipt from a transaction from a non-existence account
+[2023-06-2921:21:57] [ ERROR] [GlobalException:20] You´re trying to get a receipt from a transaction from a non-existence account
+[2023-06-2921:22:06] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-2921:30:06] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-2921:30:06] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8083/transactions/one/3] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-2921:30:13] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-2921:30:13] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8083/transactions/one/3] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-2921:32:32] [ ERROR] [GlobalException:20] you are trying to generate a receipt for a transaction that is not from your account
+[2023-06-2921:32:54] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-2921:32:54] [ ERROR] [GlobalException:20] [404] during [GET] to [http://localhost:8083/transactions/one/4] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-2921:33:00] [ ERROR] [GlobalException:20] you are trying to generate a receipt for a transaction that is not from your account
+[2023-06-2921:33:09] [ ERROR] [GlobalException:20] You´re trying to get a receipt from a transaction from a non-existence account
+[2023-06-2921:33:44] [ ERROR] [GlobalException:20] you are trying to generate a receipt for a transaction that is not from your account
+[2023-06-2921:38:41] [ ERROR] [GlobalException:15] You do not have the necessary money to make the transaction try to add funds and try again later.

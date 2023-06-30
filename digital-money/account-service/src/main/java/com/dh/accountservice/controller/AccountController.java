@@ -14,7 +14,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -129,6 +131,19 @@ public class AccountController {
     public ResponseEntity<AccountDTO> createAccount (@RequestBody AccountCreateRequestDTO account) throws IOException, BadRequestException {
         return ResponseEntity.ok(accountService.createAccount(account));
    }
+
+    @Operation(summary = "Create a transaction ",description = "We create a transaction with the required body, create the transaction only if the created body meets all the requirements")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",content = @Content(schema = @Schema(implementation = Transaction.class))),
+            @ApiResponse(responseCode = "400",description = "<ul><li>We cannot create the transaction because the length of the destination_cvu is not correct. </li> " +
+                    "<li>Invalid CVU format. The destination_cvu must contain only numeric characters.</li>"+
+                    "<li>We cannot create the user account because the length of the origin_cvu is not correct.</li>"+
+                    "<li>Invalid CVU format. The origin_cvu must contain only numeric characters.</li>" +
+                    "<li>You´re trying to create a transaction from a  non-existent account. </li>" +
+                    "<li>You do not have the necessary money to make the transaction try to add funds and try again later.</li>" +
+                    "<li>We have problems with the transaction-service try later.</li>",content = @Content(schema = @Schema(implementation = Void.class)))
+    })
+
    @PostMapping("/{id}/transferences")
    public ResponseEntity<Transaction> createTransaction (@RequestBody CreateTransactionDTO transactionDTO,@PathVariable Long id) throws BadRequestException {
 
@@ -143,6 +158,25 @@ public class AccountController {
    @PatchMapping("/{id}")
     public ResponseEntity<AccountDTO>  patchAccount (@PathVariable Long id)  throws IOException, BadRequestException{
         return ResponseEntity.ok(accountService.patchAccount(id));
+   }
+    @Operation(summary = "Generate a receipt from a transaction ",description = "We create a receipt from a transaction")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",content = @Content(schema = @Schema(implementation = byte[].class))),
+            @ApiResponse(responseCode = "400",description = "<ul><li>Error creating PDF document: +  exception.getMessage(). </li> " +
+                    "<li>Error accessing transaction properties: + exception.getMessage().</li>"+
+                    "<li>Error in the input or output of the document + exception.getMessage()</li>"+
+                    "<li>You´re trying to generate a receipt of a non-existence transaction.</li>" +
+                    "<li>you are trying to generate a receipt for a transaction that is not from your account.</li>" +
+                    "<li>You´re trying to get a receipt from a transaction from a non-existence account.</li></ul>",content = @Content(schema = @Schema(implementation = Void.class)))
+    })
+   @GetMapping("/{accountId}/transferences/{transactionId}/comprobante")
+    public ResponseEntity<byte[]> generateReceipt (@PathVariable Long accountId,@PathVariable Long transactionId) throws  BadRequestException {
+       byte[] pdfBytes = accountService.generateReceipt(transactionId,accountId);
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.APPLICATION_PDF);
+       headers.setContentDispositionFormData("attachment", "transaction.pdf");
+
+       return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
    }
 
 

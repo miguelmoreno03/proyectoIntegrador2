@@ -224,6 +224,25 @@ public class AccountService {
     public Optional<Account> findAccountByAlias (String alias) {
         return accountRepository.findByAlias(alias);
     }
+   public byte[] generateReceipt (Long transactionId,Long accountId) throws  BadRequestException {
+        Optional<Account> searchedAccount = accountRepository.findById(accountId);
+        if (searchedAccount.isPresent()){
+            try{
+                Optional<Transaction> transaction = transactionFeignRepository.findTransactionById(transactionId);
+                if(transaction.get().getAccount_id().equals(accountId)){
+                    return transactionFeignRepository.generateReceipt(transactionId);
+                } else {
+                    throw new BadRequestException("you are trying to generate a receipt for a transaction that is not from your account");
+                }
+            }catch (FeignException.NotFound ex){
+                throw new BadRequestException(ex.getMessage());
+            }
+
+
+        }else {
+            throw new BadRequestException("You´re trying to get a receipt from a transaction from a non-existence account");
+        }
+   }
 
     private String createAlias() throws IOException {
 
