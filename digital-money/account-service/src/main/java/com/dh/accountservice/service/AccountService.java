@@ -67,9 +67,13 @@ public class AccountService {
           }else {
               Optional<Account> searchedAccount = accountRepository.findByCvu(transactionRequest.getDestination_cvu());
               userAccount.get().setBalance(userAccount.get().getBalance()- transactionRequest.getAmount());
-              searchedAccount.ifPresent(account -> account.setBalance(account.getBalance() + transactionRequest.getAmount()));
+
+              searchedAccount.ifPresent(account -> {
+                  account.setBalance(account.getBalance() + transactionRequest.getAmount());
+                  accountRepository.save(account);
+              } );
               accountRepository.save(userAccount.get());
-              accountRepository.save(searchedAccount.get());
+
           }
           Transaction transaction = new Transaction();
           transaction.setAccount_id(id);

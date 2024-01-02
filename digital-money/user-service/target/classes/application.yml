@@ -1,9 +1,9 @@
 #conexion
 spring:
   datasource:
-    url: jdbc:mysql://10.0.2.199:3306/digitalmoney
+    url: jdbc:mysql://localhost:3306/digitalmoney
     username: root
-    password: pi2.e7passdm
+    password: miguelangel2003
     driver-class-name: com.mysql.cj.jdbc.Driver
 #jpa
   jpa:

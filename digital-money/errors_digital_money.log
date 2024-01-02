@@ -59,3 +59,38 @@
 [2023-06-2921:33:09] [ ERROR] [GlobalException:20] You´re trying to get a receipt from a transaction from a non-existence account
 [2023-06-2921:33:44] [ ERROR] [GlobalException:20] you are trying to generate a receipt for a transaction that is not from your account
 [2023-06-2921:38:41] [ ERROR] [GlobalException:15] You do not have the necessary money to make the transaction try to add funds and try again later.
+[2023-06-3019:10:05] [ ERROR] [GlobalException:20] we don´t found any account with the user_id :2
+[2023-06-3019:12:07] [ ERROR] [GlobalException:15] We can´t create the user account because the cvu associated in the account its already in use 
+[2023-06-3019:14:25] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:14:38] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:18:01] [ ERROR] [GlobalException:20] we don´t found any account with the id : 1
+[2023-06-3019:20:57] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:21:17] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:21:31] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:24:51] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:27:48] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-3019:27:48] [ ERROR] [GlobalException:15] [404] during [GET] to [http://localhost:8083/transactions/one/1] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-3019:28:02] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-3019:28:02] [ ERROR] [GlobalException:15] [404] during [GET] to [http://localhost:8083/transactions/one/1] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-3019:28:14] [ ERROR] [GlobalException:15] You´re trying to get a receipt from a transaction from a non-existence account
+[2023-06-3019:33:43] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-3019:33:43] [ ERROR] [GlobalException:15] [404] during [GET] to [http://localhost:8083/transactions/one/4] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-3019:33:53] [ ERROR] [GlobalException:20] We can get the information because is a non-existence transaction
+[2023-06-3019:33:53] [ ERROR] [GlobalException:15] [404] during [GET] to [http://localhost:8083/transactions/one/1] [ITransactionFeignRepository#findTransactionById(Long)]: [We can get the information because is a non-existence transaction]
+[2023-06-3019:34:02] [ ERROR] [GlobalException:15] You´re trying to get a receipt from a transaction from a non-existence account
+[2023-06-3019:38:28] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3019:47:11] [ ERROR] [GlobalException:15] We cannot create the transaction because the length of the destination_cvu is not correct
+[2023-06-3019:47:11] [ ERROR] [GlobalException:15] [400] during [POST] to [http://localhost:8083/transactions] [ITransactionFeignRepository#createTransaction(Transaction)]: [We cannot create the transaction because the length of the destination_cvu is not correct]
+[2023-06-3019:49:52] [ ERROR] [GlobalException:15] Invalid CVU format. The destination_cvu must contain only numeric characters.
+[2023-06-3019:49:52] [ ERROR] [GlobalException:15] [400] during [POST] to [http://localhost:8083/transactions] [ITransactionFeignRepository#createTransaction(Transaction)]: [Invalid CVU format. The destination_cvu must contain only numeric characters.]
+[2023-06-3019:50:08] [ ERROR] [GlobalException:15] We cannot create the user account because the length of the cvu is not correct
+[2023-06-3019:50:12] [ ERROR] [GlobalException:15] Invalid CVU format. The CVU must contain only numeric characters.
+[2023-06-3019:50:18] [ ERROR] [GlobalException:15] We can´t create the user account because the cvu associated in the account its already in use 
+[2023-06-3020:06:56] [ ERROR] [GlobalException:15] Invalid CVU format. The destination_cvu must contain only numeric characters.
+[2023-06-3020:06:56] [ ERROR] [GlobalException:15] [400] during [POST] to [http://localhost:8083/transactions] [ITransactionFeignRepository#createTransaction(Transaction)]: [Invalid CVU format. The destination_cvu must contain only numeric characters.]
+[2023-06-3020:07:13] [ ERROR] [GlobalException:15] We cannot create the transaction because the length of the destination_cvu is not correct
+[2023-06-3020:07:13] [ ERROR] [GlobalException:15] [400] during [POST] to [http://localhost:8083/transactions] [ITransactionFeignRepository#createTransaction(Transaction)]: [We cannot create the transaction because the length of the destination_cvu is not correct]
+[2023-06-3020:07:19] [ ERROR] [GlobalException:15] Invalid CVU format. The CVU must contain only numeric characters.
+[2023-06-3020:07:24] [ ERROR] [GlobalException:15] We can´t create the user account because the cvu associated in the account its already in use 
+[2023-06-3020:07:49] [ ERROR] [GlobalException:15] You´re trying to create a transaction from a  non-existent account. 
+[2023-06-3020:08:48] [ ERROR] [GlobalException:15] you are trying to generate a receipt for a transaction that is not from your account
